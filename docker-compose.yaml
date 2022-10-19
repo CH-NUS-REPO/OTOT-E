@@ -1,0 +1,26 @@
+version: "3"
+services:
+  web:
+    build: .
+    image: cookiehoodie/cs3219-otot-b
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - API_PORT=8000
+      - MONGO_URI=mongodb://mongo:27017
+      - REDIS_URI=redis://redis:6379
+
+  mongo:
+    image: mongo:4.2.23-rc1
+    volumes:
+      - mongovolume:/data/db
+      - ${PWD}:/app  # for easier access from shell
+
+  redis:
+    image: redis:7.0.5
+
+volumes:
+  mongovolume:
